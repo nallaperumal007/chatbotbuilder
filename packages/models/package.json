@@ -1,0 +1,20 @@
+{
+  "name": "models",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "license": "AGPL-3.0-or-later",
+  "private": true,
+  "devDependencies": {
+    "typescript": "^4.6.4"
+  },
+  "dependencies": {
+    "next": "^12.1.6",
+    "db": "*",
+    "@udecode/plate-core": "^11.0.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dx": "tsc --watch --preserveWatchOutput"
+  }
+}

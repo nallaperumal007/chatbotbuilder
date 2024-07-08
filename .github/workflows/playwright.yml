@@ -1,0 +1,40 @@
+name: Playwright Tests
+
+on:
+  deployment_status:
+
+jobs:
+  test-builder:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    if: ${{ github.event.deployment_status.state == 'success' && contains(github.event.deployment_status.environment, 'builder')}}
+    steps:
+      - name: Log Info
+        run: echo ${{ github.event.deployment_status.target_url }} && echo ${{ github.event.deployment }} && echo ${{ github.event.deployment_status.environment }}
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: yarn
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+      - name: Build db package
+        working-directory: ./packages/db
+        run: yarn build
+        env:
+          DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
+      - name: Build models package
+        working-directory: ./packages/models
+        run: yarn build
+      - name: Run tests
+        working-directory: ./apps/builder
+        run: yarn test
+        env:
+          PLAYWRIGHT_BUILDER_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
+          GITHUB_EMAIL: ${{ secrets.PLAYWRIGHT_GITHUB_EMAIL }}
+          GITHUB_PASSWORD: ${{ secrets.PLAYWRIGHT_GITHUB_PASSWORD }}
+          DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: playwright-results
+          path: test-results

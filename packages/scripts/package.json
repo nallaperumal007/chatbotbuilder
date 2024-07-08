@@ -1,0 +1,19 @@
+{
+  "name": "scripts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "AGPL-3.0-or-later",
+  "private": true,
+  "scripts": {
+    "start:local": "ts-node index.ts",
+    "start:prod": "NODE_ENV=production ts-node index.ts",
+    "start:workspaces:migration": "ts-node workspaceMigration.ts",
+    "start:workspaces:migration:recover": "ts-node workspaceMigrationRecover.ts"
+  },
+  "devDependencies": {
+    "db": "*",
+    "models": "*",
+    "utils": "*",
+    "ts-node": "^10.7.0"
+  }
+}

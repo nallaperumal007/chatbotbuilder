@@ -1,0 +1,23 @@
+{
+  "baseBranch": "origin/main",
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "dist/**", "build/**"]
+    },
+    "test": {
+      "dependsOn": [],
+      "outputs": []
+    },
+    "lint": {
+      "outputs": []
+    },
+    "dev": {
+      "cache": false
+    },
+    "dx": {
+      "cache": false
+    }
+  },
+  "globalDependencies": ["$NEXT_PUBLIC_E2E_TEST"]
+}
